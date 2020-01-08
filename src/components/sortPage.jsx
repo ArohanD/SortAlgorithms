@@ -23,7 +23,7 @@ const SortPage = (props) => {
       <div id='barContainer'>
         <ArrayDisplay currentArray={currentArray}/>
       </div>
-      <AlgoSelector algos={sorts} />
+      <AlgoSelector algos={sorts} changeSort={changeSort.bind(this)}/>
     </div>
   )
 }

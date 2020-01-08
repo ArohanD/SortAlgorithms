@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 const AlgoSelector = (props) => {
 
@@ -27,7 +27,9 @@ const AlgoSelector = (props) => {
       <div style={selectorStyle}>
         {
           props.algos.map(algo => {
-            return <RadioSelector algo={algo} key={algo}/>
+            return <SelectorButton algo={algo} 
+                                   key={algo} 
+                                   changeSort={props.changeSort}/>
           })
         }
       </div>
@@ -36,11 +38,30 @@ const AlgoSelector = (props) => {
   )
 }
 
-const RadioSelector = (props) => {
+const SelectorButton = (props) => {
+  
+  const [shadeState, changeShadeState] = useState(false)
+  const selectorStyle = {
+    border: '1px solid cadetblue',
+    padding: '10px',
+    color: shadeState ? 'whitesmoke' : 'black',
+    backgroundColor: shadeState ? 'cadetBlue' : 'white',
+    borderRadius: '10px',
+  }
+
+  const handleClick = (e) => {
+    let sort = e.target.id;
+    props.changeSort(sort)
+  }
+
   const title = props.algo.charAt(0).toUpperCase() + props.algo.slice(1) + ' Sort'
   return (
-    <div>
-      <div>{title}</div>
+    <div id={props.algo}
+         style={selectorStyle}
+         onMouseEnter={() => changeShadeState(!shadeState)}
+         onMouseLeave={() => changeShadeState(!shadeState)}
+         onClick={(e) => handleClick(e)}>
+      {title}
     </div>
   )
 }
