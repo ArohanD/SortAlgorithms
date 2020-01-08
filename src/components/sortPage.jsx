@@ -11,9 +11,9 @@ const SortPage = (props) => {
     flexDirection: 'column',
     justifyContent: 'space-around',
   }
-  let dummyArray = new Array(17).fill('x').map((spot, index) => {
-    return {val: index + 1, color: 'cadetblue'}
-  })
+
+  let dummyArray = generateRandomArray(17);
+
   const [currentArray, setCurrentArray] = useState(dummyArray);
   const [currentSort, changeSort] = useState('bubble')
   const sorts = ['bubble', 'merge', 'insertion', 'selection', 'quick'];
@@ -21,9 +21,16 @@ const SortPage = (props) => {
   ////Sorts////
 
   const bubbleSort = () => {
-    const newArray = currentArray.slice();
-    newArray[6] = {val: 20, color: 'red'};
-    setCurrentArray(newArray);
+    const newArray = JSON.parse(JSON.stringify(currentArray));
+    for(let i = 0; i < newArray.length - 1; i++){
+      let currentNode = newArray[i];
+      let nextNode = newArray[i + 1];
+      if(currentNode.val > nextNode.val) {
+        currentNode.color = 'green';
+        nextNode.color = 'green';
+        load(newArray);
+      }
+    }
   }
 
   const mergeSort = () => {
@@ -42,7 +49,31 @@ const SortPage = (props) => {
 
   }
 
+  const minToMax = (a, b) => a.val - b.val;
+
   ////End Sorts////
+
+  ////Visual Methods////
+  const animationQueue = [];
+
+  const load = (arr) => {
+    let copy = JSON.parse(JSON.stringify(arr))
+    animationQueue.push(copy);
+    if(JSON.stringify(copy) === JSON.stringify(copy.slice().sort(minToMax))) play();
+  }
+
+  const play = () => {
+    console.log(animationQueue)
+    for(let i = 0; i < animationQueue.length; i++) {
+      setTimeout(function() {
+        setCurrentArray(animationQueue[i])
+      }, (i * 1000));
+    }
+  }
+
+  window.playAnims = play
+
+  ////End Visual Methods////
 
   return (
     <div id='container' style={containerStyle}>
@@ -53,6 +84,12 @@ const SortPage = (props) => {
       <AlgoSelector algos={sorts} changeSort={changeSort.bind(this)}/>
     </div>
   )
+}
+
+const generateRandomArray = (n) => {
+  let dummySet = new Set();
+  while (dummySet.size !== n) dummySet.add(Math.floor(Math.random() * n) + 1)
+  return [...dummySet].map(num => {return {val: num, color: 'cadetblue'}});
 }
 
 export default SortPage;
