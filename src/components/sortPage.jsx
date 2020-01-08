@@ -17,9 +17,36 @@ const SortPage = (props) => {
   const [currentArray, setCurrentArray] = useState(dummyArray);
   const [currentSort, changeSort] = useState('bubble')
   const sorts = ['bubble', 'merge', 'insertion', 'selection', 'quick'];
+
+  ////Sorts////
+
+  const bubbleSort = () => {
+    const newArray = currentArray.slice();
+    newArray[6] = {val: 20, color: 'red'};
+    setCurrentArray(newArray);
+  }
+
+  const mergeSort = () => {
+
+  }
+
+  const insertionSort = () => {
+    
+  }
+
+  const selectionSort = () => {
+
+  }
+
+  const quickSort = () => {
+
+  }
+
+  ////End Sorts////
+
   return (
     <div id='container' style={containerStyle}>
-      <h1>{props.sortTitle}</h1>
+      <h1 onClick={() => bubbleSort.bind(this)()}>{props.sortTitle}</h1>
       <div id='barContainer'>
         <ArrayDisplay currentArray={currentArray}/>
       </div>
