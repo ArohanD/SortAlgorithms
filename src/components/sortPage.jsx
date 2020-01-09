@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ArrayDisplay from './ArrayDisplay.jsx';
 import AlgoSelector from './AlgoSelector.jsx';
+import CSS_COLOR_NAMES from '../colors.js'
 
 const SortPage = (props) => {
 
@@ -45,7 +46,7 @@ const SortPage = (props) => {
   }
 
   const mergeSort = () => {
-    const newArray = copy(currentArray);
+    let newArray = copy(currentArray);
 
     const combine = (left, right) => {
       let merged = [];
@@ -60,16 +61,15 @@ const SortPage = (props) => {
           merged.push(right[j]);
           j++;
         } else if (right[j].val <= left[i].val) {
-          right[j].color = 'red'
           merged.push(right[j]);
           j++;
         } else if (left[i].val < right[j].val) {
-          left[i].color = 'black'
           merged.push(left[i]);
           i++;
         }
       }
-      load(merged)
+
+      newArray = swap(newArray, merged);
       return merged;
     }
 
@@ -79,15 +79,10 @@ const SortPage = (props) => {
       let left = arr.slice(0, midIndex);
       let right = arr.slice(midIndex, arr.length);
 
-      changeColors(left, 'orange');
-      changeColors(right, 'blue');
-
-      load(left.concat(right))
-      let capture = combine(splitAndReturn(left), splitAndReturn(right));
-      return capture;
+      return combine(splitAndReturn(left), splitAndReturn(right));
     }
 
-    let mergedArray = splitAndReturn(newArray);
+    splitAndReturn(newArray);
     play();
   }
 
@@ -132,7 +127,7 @@ const SortPage = (props) => {
     for(let i = 0; i < animationQueue.length; i++) {
       setTimeout(function() {
         setCurrentArray(animationQueue[i])
-      }, (i * 500));
+      }, (i * 1000));
     }
   }
 
@@ -144,6 +139,42 @@ const SortPage = (props) => {
 
   const copy = (arr) => {
     return JSON.parse(JSON.stringify(arr))
+  }
+
+  const randomColorArrayGenerator = () => {
+    let colorArray = CSS_COLOR_NAMES.slice();
+    shuffleArray(colorArray);
+    return colorArray;
+  }
+
+  const shuffleArray = (arr) => {
+    for(let i = arr.length - 1; i > 0; i--){
+      let j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+
+  const swap = (arr, edits) => {
+    let newColors = randomColorArrayGenerator();
+    let indices = edits.map(editNode => {
+      return arr.findIndex(barNode => {
+        return barNode.val === editNode.val
+      })
+    })
+
+    let editVals = edits.map(node => node.val)
+    let min = Math.min(...indices);
+    let end = indices.length + min
+    let newColor = newColors.pop();
+    let loadArray = arr.map((node, index) => {
+      if(index < min || index >= end) {
+        return node;
+      } else {
+        return {val: editVals[index - min], color: newColor}
+      }
+    });
+    load(loadArray);
+    return loadArray;
   }
 
   ////End Visual Methods////
@@ -163,9 +194,11 @@ const SortPage = (props) => {
 }
 
 const generateRandomArray = (n) => {
+  let cssColors = CSS_COLOR_NAMES.slice();
+  let color = 'cadetblue'
   let dummySet = new Set();
   while (dummySet.size !== n) dummySet.add(Math.floor(Math.random() * n) + 1)
-  return [...dummySet].map(num => {return {val: num, color: 'cadetblue'}});
+  return [...dummySet].map(num => {return {val: num, color: color}});
 }
 
 export default SortPage;
