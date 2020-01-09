@@ -13,7 +13,7 @@ const SortPage = (props) => {
     justifyContent: 'space-around',
   }
 
-  let dummyArray = generateRandomArray(17);
+  let dummyArray = generateRandomArray(17, 20);
 
   const [currentArray, setCurrentArray] = useState(dummyArray);
   const [currentSort, changeSort] = useState('bubble')
@@ -69,7 +69,8 @@ const SortPage = (props) => {
         }
       }
 
-      newArray = swap(newArray, merged);
+      //Visualize swaps:
+      newArray = mergeSwap(newArray, merged);
       return merged;
     }
 
@@ -87,6 +88,57 @@ const SortPage = (props) => {
   }
 
   const insertionSort = () => {
+    window.play = play;
+    let newArray = copy(currentArray);
+    load(newArray)
+
+    const swapper = () => {
+      for(let i = 1; i < newArray.length; i++) {
+        if(newArray[i].val < newArray[i - 1].val) {
+          let currentNode = newArray[i];
+          currentNode.color = 'green';
+          load(newArray)
+          let j = i - 1;
+          while(newArray[j] && currentNode.val < newArray[j].val){
+            insertSwap(newArray, currentNode, newArray[j]);
+            currentNode = newArray[j];
+            j--;
+            if(!newArray[j] || currentNode.val > newArray[j].val) currentNode.color = 'cadetblue'
+          }
+        }
+      }
+      load(newArray);
+    }
+
+    const insertSwap = (arr, smallNode, largeNode) => {
+      
+      load(arr)
+      let smallIndex = arr.findIndex(node => {
+        return smallNode.val === node.val
+      })
+      let largeIndex = arr.findIndex(node => {
+        return largeNode.val === node.val
+      })
+
+      smallNode.color = 'green'
+
+      console.log(smallNode, largeNode)
+      console.log(smallIndex, largeIndex)
+
+      // let val1 = arr[index1].val;
+      // let val2 = arr[index2].val;
+
+      let holder = copy(arr[smallIndex])
+      arr[smallIndex] = copy(arr[largeIndex])
+      arr[largeIndex] = holder;
+      arr[smallIndex].color = 'cadetblue'
+      arr[largeIndex].color = 'green'
+      console.log(arr)
+      load(arr)
+    }
+
+    swapper();
+
     
   }
 
@@ -127,7 +179,7 @@ const SortPage = (props) => {
     for(let i = 0; i < animationQueue.length; i++) {
       setTimeout(function() {
         setCurrentArray(animationQueue[i])
-      }, (i * 1000));
+      }, (i * 100));
     }
   }
 
@@ -154,7 +206,7 @@ const SortPage = (props) => {
     }
   }
 
-  const swap = (arr, edits) => {
+  const mergeSwap = (arr, edits) => {
     let newColors = randomColorArrayGenerator();
     let indices = edits.map(editNode => {
       return arr.findIndex(barNode => {
@@ -193,11 +245,11 @@ const SortPage = (props) => {
   )
 }
 
-const generateRandomArray = (n) => {
+const generateRandomArray = (n, max) => {
   let cssColors = CSS_COLOR_NAMES.slice();
   let color = 'cadetblue'
   let dummySet = new Set();
-  while (dummySet.size !== n) dummySet.add(Math.floor(Math.random() * n) + 1)
+  while (dummySet.size !== n) dummySet.add(Math.floor(Math.random() * max) + 1)
   return [...dummySet].map(num => {return {val: num, color: color}});
 }
 
