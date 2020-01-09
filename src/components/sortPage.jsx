@@ -45,6 +45,41 @@ const SortPage = (props) => {
   }
 
   const mergeSort = () => {
+    const newArray = JSON.parse(JSON.stringify(currentArray));
+
+    const combine = (left, right) => {
+      let merged = [];
+      let i = 0;
+      let j = 0;
+
+      while(i < left.length || j < right.length) {
+        if(j === right.length){
+          merged.push(left[i]);
+          i++;
+        } else if (i === left.length) {
+          merged.push(right[j]);
+          j++;
+        } else if (right[j].val <= left[i].val) {
+          merged.push(right[j]);
+          j++;
+        } else if (left[i].val < right[j].val) {
+          merged.push(left[i]);
+          i++;
+        }
+      }
+      return merged;
+    }
+
+    const splitAndReturn = (arr) => {
+      if(arr.length <= 1) return arr;
+      let midIndex = Math.floor(arr.length / 2);
+      let left = arr.slice(0, midIndex);
+      let right = arr.slice(midIndex, arr.length);
+
+      return combine(splitAndReturn(left), splitAndReturn(right));
+    }
+
+    let mergedArray = splitAndReturn(newArray);
 
   }
 
@@ -61,6 +96,18 @@ const SortPage = (props) => {
   }
 
   const minToMax = (a, b) => a.val - b.val;
+
+  const sortSelector = {
+    'bubble': bubbleSort, 
+    'merge': mergeSort, 
+    'insertion': insertionSort, 
+    'selection': selectionSort, 
+    'quick': quickSort
+  }
+
+  const startSort = () =>{
+    sortSelector[currentSort]();
+  }
 
   ////End Sorts////
 
@@ -85,11 +132,14 @@ const SortPage = (props) => {
 
   return (
     <div id='container' style={containerStyle}>
-      <h1 onClick={() => bubbleSort.bind(this)()}>{props.sortTitle}</h1>
+      <h1>{props.sortTitle}</h1>
       <div id='barContainer'>
         <ArrayDisplay currentArray={currentArray}/>
       </div>
-      <AlgoSelector algos={sorts} changeSort={changeSort.bind(this)}/>
+      <AlgoSelector algos={sorts} 
+                    changeSort={changeSort.bind(this)}
+                    currentSort={currentSort}
+                    startSort={startSort.bind(this)}/>
     </div>
   )
 }

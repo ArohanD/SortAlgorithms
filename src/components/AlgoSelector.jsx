@@ -29,11 +29,13 @@ const AlgoSelector = (props) => {
           props.algos.map(algo => {
             return <SelectorButton algo={algo} 
                                    key={algo} 
-                                   changeSort={props.changeSort}/>
+                                   changeSort={props.changeSort}
+                                   selected={props.currentSort === algo}/>
           })
         }
       </div>
-      <button style={buttonStyle}>Go!</button>
+      <button style={buttonStyle}
+              onClick={props.startSort}>Go!</button>
     </div>
   )
 }
@@ -44,8 +46,8 @@ const SelectorButton = (props) => {
   const selectorStyle = {
     border: '1px solid cadetblue',
     padding: '10px',
-    color: shadeState ? 'whitesmoke' : 'black',
-    backgroundColor: shadeState ? 'cadetBlue' : 'white',
+    color: props.selected ? 'whitesmoke' : shadeState ? 'whitesmoke' : 'black',
+    backgroundColor: props.selected ? 'cadetblue' : shadeState ? 'cadetBlue' : 'white',
     borderRadius: '10px',
   }
 
