@@ -45,7 +45,7 @@ const SortPage = (props) => {
   }
 
   const mergeSort = () => {
-    const newArray = JSON.parse(JSON.stringify(currentArray));
+    const newArray = copy(currentArray);
 
     const combine = (left, right) => {
       let merged = [];
@@ -60,13 +60,16 @@ const SortPage = (props) => {
           merged.push(right[j]);
           j++;
         } else if (right[j].val <= left[i].val) {
+          right[j].color = 'red'
           merged.push(right[j]);
           j++;
         } else if (left[i].val < right[j].val) {
+          left[i].color = 'black'
           merged.push(left[i]);
           i++;
         }
       }
+      load(merged)
       return merged;
     }
 
@@ -76,11 +79,16 @@ const SortPage = (props) => {
       let left = arr.slice(0, midIndex);
       let right = arr.slice(midIndex, arr.length);
 
-      return combine(splitAndReturn(left), splitAndReturn(right));
+      changeColors(left, 'orange');
+      changeColors(right, 'blue');
+
+      load(left.concat(right))
+      let capture = combine(splitAndReturn(left), splitAndReturn(right));
+      return capture;
     }
 
     let mergedArray = splitAndReturn(newArray);
-
+    play();
   }
 
   const insertionSort = () => {
@@ -124,8 +132,18 @@ const SortPage = (props) => {
     for(let i = 0; i < animationQueue.length; i++) {
       setTimeout(function() {
         setCurrentArray(animationQueue[i])
-      }, (i * 200));
+      }, (i * 500));
     }
+  }
+
+  const changeColors = (arr, color) => {
+    arr.forEach(node => {
+      node.color = color;
+    });
+  }
+
+  const copy = (arr) => {
+    return JSON.parse(JSON.stringify(arr))
   }
 
   ////End Visual Methods////
