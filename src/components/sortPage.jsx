@@ -20,17 +20,28 @@ const SortPage = (props) => {
 
   ////Sorts////
 
-  const bubbleSort = () => {
-    const newArray = JSON.parse(JSON.stringify(currentArray));
+  const bubbleSort = (arr) => {
+    const newArray = arr || JSON.parse(JSON.stringify(currentArray));
+    let counter = 0;
     for(let i = 0; i < newArray.length - 1; i++){
       let currentNode = newArray[i];
       let nextNode = newArray[i + 1];
       if(currentNode.val > nextNode.val) {
+        counter++;
         currentNode.color = 'green';
         nextNode.color = 'green';
         load(newArray);
+        let movingVal = currentNode.val;
+        currentNode.val = nextNode.val;
+        nextNode.val = movingVal;
+        load(newArray);
+        currentNode.color = 'cadetBlue';
+        nextNode.color = 'cadetBlue'
+        load(newArray);
+        i--;
       }
     }
+    if(counter > 0) bubbleSort(newArray);
   }
 
   const mergeSort = () => {
@@ -63,15 +74,12 @@ const SortPage = (props) => {
   }
 
   const play = () => {
-    console.log(animationQueue)
     for(let i = 0; i < animationQueue.length; i++) {
       setTimeout(function() {
         setCurrentArray(animationQueue[i])
-      }, (i * 1000));
+      }, (i * 200));
     }
   }
-
-  window.playAnims = play
 
   ////End Visual Methods////
 
