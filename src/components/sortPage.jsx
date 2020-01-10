@@ -88,7 +88,6 @@ const SortPage = (props) => {
   }
 
   const insertionSort = () => {
-    window.play = play;
     let newArray = copy(currentArray);
     load(newArray)
 
@@ -100,7 +99,7 @@ const SortPage = (props) => {
           load(newArray)
           let j = i - 1;
           while(newArray[j] && currentNode.val < newArray[j].val){
-            insertSwap(newArray, currentNode, newArray[j]);
+            swap(newArray, currentNode, newArray[j]);
             currentNode = newArray[j];
             j--;
             if(!newArray[j] || currentNode.val > newArray[j].val) currentNode.color = 'cadetblue'
@@ -110,40 +109,54 @@ const SortPage = (props) => {
       load(newArray);
     }
 
-    const insertSwap = (arr, smallNode, largeNode) => {
-      
-      load(arr)
-      let smallIndex = arr.findIndex(node => {
-        return smallNode.val === node.val
-      })
-      let largeIndex = arr.findIndex(node => {
-        return largeNode.val === node.val
-      })
-
-      smallNode.color = 'green'
-
-      console.log(smallNode, largeNode)
-      console.log(smallIndex, largeIndex)
-
-      // let val1 = arr[index1].val;
-      // let val2 = arr[index2].val;
-
-      let holder = copy(arr[smallIndex])
-      arr[smallIndex] = copy(arr[largeIndex])
-      arr[largeIndex] = holder;
-      arr[smallIndex].color = 'cadetblue'
-      arr[largeIndex].color = 'green'
-      console.log(arr)
-      load(arr)
-    }
-
     swapper();
 
-    
   }
 
   const selectionSort = () => {
+    let newArray = copy(currentArray);
+    load(newArray)
+    
+    for(let i = 0; i < newArray.length - 1; i++){
+      let min = newArray[i];
+      min.color= 'green'
+      load(newArray)
 
+      for(let j = i + 1; j < newArray.length; j++){
+        if(newArray[j].val < min.val) {
+          if(min.val !== newArray[i].val )min.color = 'cadetblue'
+          min = newArray[j];
+          min.color = 'red';
+          load(newArray)
+        }
+      }
+
+      //Visualizing (except swap):
+      let minIndex = newArray.findIndex(node => node.val === min.val);
+      swap(newArray, min, newArray[i])
+      newArray[minIndex].color = 'cadetblue'
+      newArray[i].color = 'orange'
+    }
+    load(newArray)
+
+  }
+
+  const swap = (arr, smallNode, largeNode) => {
+      
+    load(arr)
+    let smallIndex = arr.findIndex(node => {
+      return smallNode.val === node.val
+    })
+    let largeIndex = arr.findIndex(node => {
+      return largeNode.val === node.val
+    })
+
+    smallNode.color = 'green'
+
+    let holder = copy(arr[smallIndex])
+    arr[smallIndex] = copy(arr[largeIndex])
+    arr[largeIndex] = holder;
+    load(arr)
   }
 
   const quickSort = () => {

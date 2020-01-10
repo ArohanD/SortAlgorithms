@@ -6,6 +6,7 @@ const ArrayDisplay = (props) => {
     width: '100%',
     height: '50vh',
     border: '1px solid cadetblue',
+    borderRadius: '10px',
   
     display: 'flex',
     flexDirection: 'row',
