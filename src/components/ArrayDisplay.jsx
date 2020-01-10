@@ -30,11 +30,12 @@ const Bar = (props) => {
   const barStyle = {
     backgroundColor: props.value.color,
     height: `${props.value.val * 20}px`,
-    width: '40px'
+    width: '40px',
+    borderRadius: '2px'
   }
 
   return (
-    <div style={barStyle}></div>
+    <div style={barStyle}>{props.value.val}</div>
   )
 }
 

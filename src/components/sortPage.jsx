@@ -13,10 +13,11 @@ const SortPage = (props) => {
     justifyContent: 'space-around',
   }
 
-  let dummyArray = generateRandomArray(17, 20);
+  let dummyArray = generateRandomArray(13, 20);
 
   const [currentArray, setCurrentArray] = useState(dummyArray);
   const [currentSort, changeSort] = useState('bubble')
+  const [animationTime, setAnimationTime] = useState(500);
   const sorts = ['bubble', 'merge', 'insertion', 'selection', 'quick'];
 
   ////Sorts////
@@ -84,7 +85,29 @@ const SortPage = (props) => {
     }
 
     splitAndReturn(newArray);
-    play();
+  }
+
+  const mergeSwap = (arr, edits) => {
+    let newColors = randomColorArrayGenerator();
+    let indices = edits.map(editNode => {
+      return arr.findIndex(barNode => {
+        return barNode.val === editNode.val
+      })
+    })
+
+    let editVals = edits.map(node => node.val)
+    let min = Math.min(...indices);
+    let end = indices.length + min
+    let newColor = newColors.pop();
+    let loadArray = arr.map((node, index) => {
+      if(index < min || index >= end) {
+        return node;
+      } else {
+        return {val: editVals[index - min], color: newColor}
+      }
+    });
+    load(loadArray);
+    return loadArray;
   }
 
   const insertionSort = () => {
@@ -141,6 +164,63 @@ const SortPage = (props) => {
 
   }
 
+  const quickSort = () => {
+    let newArray = copy(currentArray);
+
+    const quickSorter = (arr) => {
+      if(arr.length <= 1) return arr;
+
+      let pivot = arr[0];
+      pivot.color = 'orange'
+      load(newArray)
+      let left = [];
+      let right = [];
+
+      for(let i = 1; i < arr.length; i++) {
+        if (arr[i].val < pivot.val) {
+          arr[i].color = 'red';
+          left.push(arr[i]);
+        } else if(arr[i].val >= pivot.val) {
+          arr[i].color = 'green'
+          right.push(arr[i]);
+        }
+        load(newArray);
+      }
+
+      arr = left.concat(pivot, right)
+      //load(arr)
+      //return quickSorter(left).concat(pivot, quickSorter(right));
+      return [arr, pivot, left, right];
+    }
+
+    let [step, retPivot, left, right] = quickSorter(newArray);
+    load(step)
+    let pivotIndex = step.findIndex(node => node.val === retPivot.val)
+    console.log(pivotIndex)
+    step.forEach(node => (node.color !== 'orange') ? node.color = 'cadetblue' : null)
+    load(step)
+    newArray = step
+    
+    let [step2, retPivot2, left2, right2] = quickSorter(left)
+    newArray = step2.concat(retPivot, right)
+    load(newArray)
+
+    let [step3] = quickSorter(left2);
+    newArray = step3.concat(retPivot2, right2, retPivot, right)
+    load(newArray)
+    
+  }
+
+  const minToMax = (a, b) => a.val - b.val;
+
+  const sortSelector = {
+    'bubble': bubbleSort, 
+    'merge': mergeSort, 
+    'insertion': insertionSort, 
+    'selection': selectionSort, 
+    'quick': quickSort
+  }
+
   const swap = (arr, smallNode, largeNode) => {
       
     load(arr)
@@ -157,20 +237,6 @@ const SortPage = (props) => {
     arr[smallIndex] = copy(arr[largeIndex])
     arr[largeIndex] = holder;
     load(arr)
-  }
-
-  const quickSort = () => {
-
-  }
-
-  const minToMax = (a, b) => a.val - b.val;
-
-  const sortSelector = {
-    'bubble': bubbleSort, 
-    'merge': mergeSort, 
-    'insertion': insertionSort, 
-    'selection': selectionSort, 
-    'quick': quickSort
   }
 
   const startSort = () =>{
@@ -192,9 +258,11 @@ const SortPage = (props) => {
     for(let i = 0; i < animationQueue.length; i++) {
       setTimeout(function() {
         setCurrentArray(animationQueue[i])
-      }, (i * 100));
+      }, (i * animationTime));
     }
   }
+
+  window.play = play;
 
   const changeColors = (arr, color) => {
     arr.forEach(node => {
@@ -217,29 +285,6 @@ const SortPage = (props) => {
       let j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-  }
-
-  const mergeSwap = (arr, edits) => {
-    let newColors = randomColorArrayGenerator();
-    let indices = edits.map(editNode => {
-      return arr.findIndex(barNode => {
-        return barNode.val === editNode.val
-      })
-    })
-
-    let editVals = edits.map(node => node.val)
-    let min = Math.min(...indices);
-    let end = indices.length + min
-    let newColor = newColors.pop();
-    let loadArray = arr.map((node, index) => {
-      if(index < min || index >= end) {
-        return node;
-      } else {
-        return {val: editVals[index - min], color: newColor}
-      }
-    });
-    load(loadArray);
-    return loadArray;
   }
 
   ////End Visual Methods////
