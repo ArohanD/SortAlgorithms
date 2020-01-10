@@ -17,7 +17,7 @@ const SortPage = (props) => {
 
   const [currentArray, setCurrentArray] = useState(dummyArray);
   const [currentSort, changeSort] = useState('bubble')
-  const [animationTime, setAnimationTime] = useState(500);
+  const [animationTime, setAnimationTime] = useState(200);
   const sorts = ['bubble', 'merge', 'insertion', 'selection', 'quick'];
 
   ////Sorts////
