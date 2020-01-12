@@ -174,28 +174,23 @@ const SortPage = (props) => {
 
       let pivot = arr[end - 1];
       pivot.color = 'orange'
-      load(newArray)
 
       let pivotIndex = start;
-      arr[pivotIndex].color = 'whitesmoke'
+      arr[pivotIndex].color = 'brown'
       for(let i = start; i < end; i++) {
         arr[i].color = 'green'
         if (arr[i].val < pivot.val) {
           arr[i].color = 'red';
-          //load(newArray)
           quickSwap(arr, pivotIndex, i);
           arr[i].color = 'cadetblue'
           pivotIndex++;
           arr[pivotIndex].color = 'brown'
-        } else if(arr[i].val >= pivot.val) {
-          //arr[i].color = 'green'
         }
         load(newArray);
       }
 
       quickSwap(arr, pivotIndex, end - 1)
       arr[end - 1].color = 'cadetblue'
-      //load(newArray)
       changeColors(newArray, 'cadetblue')
       
       quickSorter(arr, start, pivotIndex)
@@ -210,6 +205,7 @@ const SortPage = (props) => {
     }
 
     quickSorter(newArray, 0, newArray.length)
+    load(newArray)
     
   }
 
