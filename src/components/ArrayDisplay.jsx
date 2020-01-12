@@ -35,7 +35,7 @@ const Bar = (props) => {
   }
 
   return (
-    <div style={barStyle}>{props.value.val}</div>
+    <div style={barStyle}></div>
   )
 }
 

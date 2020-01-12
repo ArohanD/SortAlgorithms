@@ -13,7 +13,7 @@ const SortPage = (props) => {
     justifyContent: 'space-around',
   }
 
-  let dummyArray = generateRandomArray(13, 20);
+  let dummyArray = generateRandomArray(17, 20);
 
   const [currentArray, setCurrentArray] = useState(dummyArray);
   const [currentSort, changeSort] = useState('bubble')
@@ -167,47 +167,49 @@ const SortPage = (props) => {
   const quickSort = () => {
     let newArray = copy(currentArray);
 
-    const quickSorter = (arr) => {
-      if(arr.length <= 1) return arr;
+    const quickSorter = (arr, start, end) => {
+      if(start >= end){
+        return;
+      } 
 
-      let pivot = arr[0];
+      let pivot = arr[end - 1];
       pivot.color = 'orange'
       load(newArray)
-      let left = [];
-      let right = [];
 
-      for(let i = 1; i < arr.length; i++) {
+      let pivotIndex = start;
+      arr[pivotIndex].color = 'whitesmoke'
+      for(let i = start; i < end; i++) {
+        arr[i].color = 'green'
         if (arr[i].val < pivot.val) {
           arr[i].color = 'red';
-          left.push(arr[i]);
+          //load(newArray)
+          quickSwap(arr, pivotIndex, i);
+          arr[i].color = 'cadetblue'
+          pivotIndex++;
+          arr[pivotIndex].color = 'brown'
         } else if(arr[i].val >= pivot.val) {
-          arr[i].color = 'green'
-          right.push(arr[i]);
+          //arr[i].color = 'green'
         }
         load(newArray);
       }
 
-      arr = left.concat(pivot, right)
-      //load(arr)
-      //return quickSorter(left).concat(pivot, quickSorter(right));
-      return [arr, pivot, left, right];
+      quickSwap(arr, pivotIndex, end - 1)
+      arr[end - 1].color = 'cadetblue'
+      //load(newArray)
+      changeColors(newArray, 'cadetblue')
+      
+      quickSorter(arr, start, pivotIndex)
+      quickSorter(arr, pivotIndex + 1, end)
+      
     }
 
-    let [step, retPivot, left, right] = quickSorter(newArray);
-    load(step)
-    let pivotIndex = step.findIndex(node => node.val === retPivot.val)
-    console.log(pivotIndex)
-    step.forEach(node => (node.color !== 'orange') ? node.color = 'cadetblue' : null)
-    load(step)
-    newArray = step
-    
-    let [step2, retPivot2, left2, right2] = quickSorter(left)
-    newArray = step2.concat(retPivot, right)
-    load(newArray)
+    const quickSwap = (arr, index1, index2) => {
+      let holder = copy(arr[index1]);
+      arr[index1] = arr[index2];
+      arr[index2] = holder;
+    }
 
-    let [step3] = quickSorter(left2);
-    newArray = step3.concat(retPivot2, right2, retPivot, right)
-    load(newArray)
+    quickSorter(newArray, 0, newArray.length)
     
   }
 
