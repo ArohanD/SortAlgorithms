@@ -17,6 +17,12 @@ const AlgoSelector = (props) => {
     justifyContent: 'space-between'
   }
 
+  const inputPanel = {
+    display: 'flex',
+    width: '20%',
+    justifyContent: 'space-between'
+  }
+
   const buttonStyle = {
     width: '50px',
     height: '50px',
@@ -34,8 +40,11 @@ const AlgoSelector = (props) => {
           })
         }
       </div>
-      <button style={buttonStyle}
-              onClick={props.startSort}>Go!</button>
+      <div style={inputPanel}>
+        <input style={buttonStyle} value={numItems}></input>
+        <button style={buttonStyle}
+                onClick={props.startSort}>Go!</button>
+      </div>
     </div>
   )
 }

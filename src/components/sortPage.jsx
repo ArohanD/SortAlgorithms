@@ -13,8 +13,8 @@ const SortPage = (props) => {
     justifyContent: 'space-around',
   }
 
-  let dummyArray = generateRandomArray(17, 20);
-
+  const [numItems, setNumItems] = useState(17)
+  let dummyArray = generateRandomArray(numItems, 20);
   const [currentArray, setCurrentArray] = useState(dummyArray);
   const [currentSort, changeSort] = useState('bubble')
   const [animationTime, setAnimationTime] = useState(200);
@@ -296,7 +296,9 @@ const SortPage = (props) => {
       <AlgoSelector algos={sorts} 
                     changeSort={changeSort.bind(this)}
                     currentSort={currentSort}
-                    startSort={startSort.bind(this)}/>
+                    startSort={startSort.bind(this)}
+                    numItems={numItems}
+                    setNumItems={setNumItems}/>
     </div>
   )
 }
