@@ -27,7 +27,8 @@ const AlgoSelector = (props) => {
     width: '80px',
     height: '50px',
     textAlign: 'center',
-    fontSize: '1.2em'
+    fontSize: '1.2em',
+    fontFamily: `'Ibarra Real Nova', serif`
   }
 
   const itemCountStyle = {

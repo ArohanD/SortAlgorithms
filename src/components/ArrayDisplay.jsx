@@ -29,11 +29,11 @@ const ArrayDisplay = (props) => {
 
 const Bar = (props) => {
 
-  const lengthMultiplier = 400 / props.arrayLength;
+  const lengthMultiplier = 90 / props.arrayLength;
 
   const barStyle = {
     backgroundColor: props.value.color,
-    height: `${props.value.val * lengthMultiplier}px`,
+    height: `${props.value.val * lengthMultiplier}%`,
     width: `40px`,
     borderRadius: '2px'
   }
