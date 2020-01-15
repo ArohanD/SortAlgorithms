@@ -24,7 +24,7 @@ const SortPage = (props) => {
   useEffect(() => {
     let newDummyArray = generateRandomArray(numItems, numItems);
     setCurrentArray(newDummyArray)
-    setAnimationTime(Math.floor(10000/numItems))
+    setAnimationTime(Math.floor(10000 / numItems))
   }, [numItems])
 
   ////Sorts////
