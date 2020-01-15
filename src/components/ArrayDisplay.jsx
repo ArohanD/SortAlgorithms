@@ -18,7 +18,9 @@ const ArrayDisplay = (props) => {
     <div>
       <div id='array_container' style={style}>
         {
-          props.currentArray.map(barVal => <Bar value={barVal} key={barVal.val}/>)
+          props.currentArray.map(barVal => <Bar value={barVal} 
+                                                key={barVal.val}
+                                                arrayLength={props.currentArray.length}/>)
         }
       </div>
     </div>
@@ -27,10 +29,12 @@ const ArrayDisplay = (props) => {
 
 const Bar = (props) => {
 
+  const lengthMultiplier = 400 / props.arrayLength;
+
   const barStyle = {
     backgroundColor: props.value.color,
-    height: `${props.value.val * 20}px`,
-    width: '40px',
+    height: `${props.value.val * lengthMultiplier}px`,
+    width: `40px`,
     borderRadius: '2px'
   }
 

@@ -19,13 +19,30 @@ const AlgoSelector = (props) => {
 
   const inputPanel = {
     display: 'flex',
-    width: '20%',
-    justifyContent: 'space-between'
+    width: '40%',
+    justifyContent: 'space-between',
   }
 
   const buttonStyle = {
-    width: '50px',
+    width: '80px',
     height: '50px',
+    textAlign: 'center',
+    fontSize: '1.2em'
+  }
+
+  const itemCountStyle = {
+    width: '250px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }
+
+  const changeNumItems = (e) => {
+    let num = +e.target.value;
+    console.log(typeof num)
+    if(typeof num === 'number' && num < 1000) {
+      props.setNumItems(num)
+    }
   }
 
   return (
@@ -41,7 +58,12 @@ const AlgoSelector = (props) => {
         }
       </div>
       <div style={inputPanel}>
-        <input style={buttonStyle} value={numItems}></input>
+        <div style={itemCountStyle}>
+          <label>Number of items:</label>
+          <input style={buttonStyle} 
+                defaultValue={props.numItems}
+                onChange={(e) => changeNumItems(e)}></input>
+        </div>
         <button style={buttonStyle}
                 onClick={props.startSort}>Go!</button>
       </div>

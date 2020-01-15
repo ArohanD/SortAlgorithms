@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const port = 4321;
 
 app.use(express.static('dist'));
 
@@ -15,11 +14,10 @@ app.get('/*', function(req, res) {
   })
 })
 
-//app.listen(port, () => console.log(`listening from port: ${port}`));
-
+//GDC Deploy setup:
 const server = app.listen(8080, () => {
   const host = server.address().address;
   const port = server.address().port;
 
-  console.log(`Example app listening at http://${host}:${port}`);
+  console.log(`Algorithms live at http://${host}:${port}`);
 });

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ArrayDisplay from './ArrayDisplay.jsx';
 import AlgoSelector from './AlgoSelector.jsx';
 import CSS_COLOR_NAMES from '../colors.js'
@@ -11,14 +11,21 @@ const SortPage = (props) => {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
+    fontFamily: `'Ibarra Real Nova', serif`
   }
 
-  const [numItems, setNumItems] = useState(17)
-  let dummyArray = generateRandomArray(numItems, 20);
+  const [numItems, setNumItems] = useState(20)
+  let dummyArray = generateRandomArray(numItems, numItems);
   const [currentArray, setCurrentArray] = useState(dummyArray);
   const [currentSort, changeSort] = useState('bubble')
   const [animationTime, setAnimationTime] = useState(200);
   const sorts = ['bubble', 'merge', 'insertion', 'selection', 'quick'];
+
+  useEffect(() => {
+    let newDummyArray = generateRandomArray(numItems, numItems);
+    setCurrentArray(newDummyArray)
+    setAnimationTime(Math.floor(10000/numItems))
+  }, [numItems])
 
   ////Sorts////
 
@@ -260,8 +267,6 @@ const SortPage = (props) => {
     }
   }
 
-  window.play = play;
-
   const changeColors = (arr, color) => {
     arr.forEach(node => {
       node.color = color;
@@ -298,7 +303,7 @@ const SortPage = (props) => {
                     currentSort={currentSort}
                     startSort={startSort.bind(this)}
                     numItems={numItems}
-                    setNumItems={setNumItems}/>
+                    setNumItems={setNumItems.bind(this)}/>
     </div>
   )
 }
